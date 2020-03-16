@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Organization Tree</title>
+    <link
+      rel="stylesheet"
+      href="{{url_for('static', filename = 'css/jquery.orgchart.min.css')}}"
+    />
+  </head>
+  <body>
+    <div id="chart-container"></div>
+
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="{{url_for('static', filename = 'js/jquery.orgchart.min.js')}}"></script>
+    <script>
+      "use strict";
+
+      (function($) {
+        $(function() {
+          var datascource = {{response | safe}};
+          console.log(datascource);
+          $("#chart-container").orgchart({
+            data: datascource,
+            depth: 2,
+            nodeTitle: "name",
+            nodeContent: "title",
+            nodeID: "id",
+            createNode: function($node, data) {
+              var nodePrompt = $("<i>", {
+                class: "fa fa-info-circle second-menu-icon",
+                click: function() {
+                  $(this)
+                    .siblings(".second-menu")
+                    .toggle();
+                }
+              });
+              var secondMenu =
+                '<div class="second-menu"></div>';
+              $node.append(nodePrompt).append(secondMenu);
+            }
+          });
+        });
+      })(jQuery);
+    </script>
+  </body>
+</html>
